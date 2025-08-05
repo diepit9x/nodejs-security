@@ -1,12 +1,8 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import errorHandler from '@/middlewares/error.handler';
 import responseHandler from '@/middlewares/response.handler';
 import routes from '@/routes';
 import morgan from 'morgan';
-// import 'express-async-errors';
-
-dotenv.config();
 
 const app = express();
 

@@ -1,17 +1,16 @@
 import { Sequelize, Dialect } from 'sequelize';
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-
-dotenv.config();
+import { DB_CONFIG } from '@/config/env';
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME!,
-  process.env.DB_USER!,
-  process.env.DB_PASS!,
+  DB_CONFIG.database,
+  DB_CONFIG.username,
+  DB_CONFIG.password,
   {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT as Dialect,
+    host: DB_CONFIG.host,
+    port: DB_CONFIG.port,
+    dialect: DB_CONFIG.dialect as Dialect,
     logging: false,
   }
 );

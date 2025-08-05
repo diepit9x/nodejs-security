@@ -1,10 +1,6 @@
 import app from '@/app';
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { sequelize } from '@/database';
-
-const PORT = process.env.PORT || 3000;
+import { PORT } from '@/config/env';
 
 (async () => {
   try {

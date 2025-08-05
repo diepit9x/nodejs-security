@@ -1,10 +1,12 @@
+const { DB_CONFIG } = require('@/config/env');
+
 module.exports = {
   development: {
-    username: process.env.DB_USER || 'root',
-    password: process.env.DB_PASS || '',
-    database: process.env.DB_NAME || 'nodejs_demo3',
-    host: process.env.DB_HOST || '127.0.0.1',
-    dialect: process.env.DB_DIALECT || 'mysql',
+    username: DB_CONFIG.username,
+    password: DB_CONFIG.password,
+    database: DB_CONFIG.database,
+    host: DB_CONFIG.host,
+    dialect: DB_CONFIG.dialect,
   },
   test: {
     username: 'root',
