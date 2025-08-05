@@ -1,4 +1,5 @@
 import { JWT_EXPIRES_IN, JWT_SECRET } from '@/config/env';
+import { JwtPayload } from '@/types/jwt.payload.type';
 import jwt from 'jsonwebtoken';
 
 export const signToken = (payload: object): string => {
@@ -7,6 +8,6 @@ export const signToken = (payload: object): string => {
   });
 };
 
-export const verifyToken = (token: string): any => {
-  return jwt.verify(token, JWT_SECRET);
+export const verifyToken = (token: string): JwtPayload => {
+  return jwt.verify(token, JWT_SECRET) as JwtPayload;
 };

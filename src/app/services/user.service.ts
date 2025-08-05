@@ -7,7 +7,7 @@ import { plainToInstance } from 'class-transformer';
 import { comparePassword, hashPassword } from '@/utils/password.util';
 import { LoginRequest } from '../dtos/requests/login.request';
 import { signToken } from '@/utils/jwt.util';
-import { JwtPayload } from '@/types/jwt-payload.type';
+import { JwtPayload } from '@/types/jwt.payload.type';
 
 const getAllUsers = async () => {
   return await db.User.findAll();
@@ -62,4 +62,15 @@ const generateToken = async (loginRequest: LoginRequest) => {
   return signToken(payload);
 };
 
-export { getAllUsers, getUserByEmail, createUser, generateToken };
+const userInfo = async (principal: JwtPayload) => {
+  const existingUser = getUserByEmail(principal.email);
+  if (!existingUser) {
+    throw new AppError('User không tồn tại');
+  }
+  const dto = plainToInstance(UserResponse, existingUser, {
+    excludeExtraneousValues: true,
+  });
+  return dto;
+};
+
+export { getAllUsers, getUserByEmail, createUser, generateToken, userInfo };
