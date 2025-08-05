@@ -4,7 +4,10 @@ import { RegisterRequest } from '@/app/dtos/requests/register.request';
 import { User } from '@/database/models/user.model';
 import { UserResponse } from '@/app/dtos/responses/user.response';
 import { plainToInstance } from 'class-transformer';
-import { hashPassword } from '@/utils/password.util';
+import { comparePassword, hashPassword } from '@/utils/password.util';
+import { LoginRequest } from '../dtos/requests/login.request';
+import { signToken } from '@/utils/jwt.util';
+import { JwtPayload } from '@/types/jwt-payload.type';
 
 const getAllUsers = async () => {
   return await db.User.findAll();
@@ -36,4 +39,27 @@ const createUser = async (registerRequest: RegisterRequest) => {
 
   return dto;
 };
-export { getAllUsers, getUserByEmail, createUser };
+
+const generateToken = async (loginRequest: LoginRequest) => {
+  const email: string = loginRequest.email;
+  const password: string = loginRequest.password;
+
+  const existingUser: User = await db.User.findOne({ where: { email } });
+
+  if (!existingUser) {
+    throw new AppError('Thông tin đăng nhập không chính xác', 400);
+  }
+
+  const isMatch = await comparePassword(password, existingUser.password);
+  if (!isMatch) {
+    throw new AppError('Thông tin đăng nhập không chính xác', 400);
+  }
+
+  const payload: JwtPayload = {
+    email: existingUser.email,
+    role: existingUser.role,
+  };
+  return signToken(payload);
+};
+
+export { getAllUsers, getUserByEmail, createUser, generateToken };

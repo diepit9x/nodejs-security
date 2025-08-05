@@ -16,6 +16,12 @@ export class UserResponse {
   @Exclude()
   password!: string;
 
+  @Expose()
+  createdAt!: Date;
+
+  @Expose()
+  updatedAt!: Date;
+
   constructor(partial: Partial<UserResponse>) {
     Object.assign(this, partial);
   }
